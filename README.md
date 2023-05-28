@@ -26,7 +26,7 @@ To use this menu software, include the `Menu.h` header file in your C++ project.
 3. There is a pre-defined field called `Exit` in the menu and it appears at the bottom of the menu.
 4. The keybinds for the menu are stored in a string variable called `Keybinds`. The 0th index is the up key, 1st index is the down key, and the 2nd index is the select key.
 5. The `printMenu()` and `gen_element()` functions are private as their only role is to make the menu printing easier.
-6. You need to have the `conio.h` header in your project/compiler. Refer to https://raw.githubusercontent.com/ramadhinolfski/cpackets/master/conio.h for the header file.
+6. You need to have the `conio.h` header in your project/compiler. Refer to [this link](https://raw.githubusercontent.com/ramadhinolfski/cpackets/master/conio.h) for the header file.
 
 ## Reference
 
