@@ -23,7 +23,7 @@
 */
 
 
-// EPIC_MENU_UWU is created as the guard clause for the program
+// EPIC_MENU_UWU is created so that the same file is not pasted multiple times in a program
 # ifndef EPIC_MENU_UWU
 # define EPIC_MENU_UWU
 
@@ -44,6 +44,8 @@ class Menu{
         std::string neutral;
         // contains three keybinds as string format -> the up key, down key, and select key
         std::string keybinds;
+        // stores the heading of the menu
+        std::string heading;
         // it is the maximum characters count that the menu will extend upto. Default is 32.
         int max_string_len;
         // stores the position of the currently selected item in the menu
@@ -58,19 +60,29 @@ class Menu{
         // default constructor for the class
         Menu();
         // constructor to initialize all non-constant values in the class
-        Menu(int max_len, std::string head_color, std::string body_color, char up_key, char down_key, char sel_key);
+        Menu(
+            int max_len, std::string header, std::string head_color, std::string body_color,
+            char up_key, char down_key, char sel_key
+        );
         // default destructor for the class
         ~Menu();
 
         // = operator for the class
         Menu operator=(Menu m1);
         // method which acts similar to the parameterized constructor of the class
-        void update(int max_len, std::string head_color, std::string body_color, char up_key, char down_key, char sel_key);
-        
+        void update(
+            int max_len, std::string header, std::string head_color, std::string body_color,
+            char up_key, char down_key, char sel_key
+        );
         // returns the max string length
         int get_max_len();
         // sets the max string length to a new value
         void set_max_len(int max_len);
+
+        // returns the heading of the class
+        std::string get_heading();
+        // sets the new heading for the class
+        void set_heading(std::string header);
 
         // returns the head and the body colors
         std::pair<std::string, std::string> get_colors();
@@ -114,10 +126,13 @@ Menu::Menu(){
     colors = {};
     neutral = "\033[0m";
     keybinds = "wsq";
+    heading = "MENU";
+    colors.first = "\033[0;31m";
     pos = names.begin();
 }
 
-Menu::Menu(int max_len, std::string head_color, std::string body_color, char up_key, char down_key, char sel_key){
+Menu::Menu(int max_len, std::string header, std::string head_color, std::string body_color, 
+char up_key, char down_key, char sel_key){
     // setting all the variables with the parameters
 
     // if the maximum length provided is 0
@@ -144,13 +159,15 @@ Menu::Menu(int max_len, std::string head_color, std::string body_color, char up_
     colors.first = "\033[0;" + head_color + "m";
     colors.second = "\033[0;" + body_color + "m";
     neutral = "\033[0m";
+    heading = header;
     keybinds[0] = up_key;
     keybinds[1] = down_key;
     keybinds[2] = sel_key;
     pos = names.begin();
 }
 
-void Menu::update(int max_len, std::string head_color, std::string body_color, char up_key, char down_key, char sel_key){
+void Menu::update(int max_len, std::string header, std::string head_color, std::string body_color,
+char up_key, char down_key, char sel_key){
     // this method acts similar to the above constructor
 
     // if len is 0 or -ve
@@ -176,6 +193,7 @@ void Menu::update(int max_len, std::string head_color, std::string body_color, c
     // setting all the variables
     colors.first = "\033[0;" + head_color + "m";
     colors.second = "\033[0;" + body_color + "m";
+    heading = header;
     keybinds[0] = up_key;
     keybinds[1] = down_key;
     keybinds[2] = sel_key;
@@ -205,6 +223,14 @@ void Menu::set_max_len(int max_len){
     }
 
     max_string_len = max_len;
+}
+
+std::string Menu::get_heading(){
+    return heading; // returning heading
+}
+
+void Menu::set_heading(std::string header){
+    heading = header; // setting new heading
 }
 
 std::pair<std::string, std::string> Menu::get_colors(){
@@ -305,7 +331,7 @@ void Menu::printMenu(){
     
     // printing the equal signs, the menu heading, and then again equal signs
     std::cout << "|" << std::string(max_string_len, '=') << "|" << std::endl << "|";
-    gen_element("MENU", colors.first);
+    gen_element(heading, colors.first);
     std::cout << "|" << std::endl << "|" << std::string(max_string_len, '=') << "|" << std::endl;
 
     // iterating through the vector
@@ -313,7 +339,7 @@ void Menu::printMenu(){
         // printing the current vector index
         std::cout << "|";
         // if the current index is selected, print it in head color, else print it in body color
-        gen_element(itr->first, ((itr == pos)? colors.second : colors.first));
+        gen_element(itr->first, ((itr == pos)? colors.first : colors.second));
         std::cout << "|" << std::endl;
     }
 
