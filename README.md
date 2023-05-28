@@ -56,6 +56,8 @@ Values from 90 to 97 are the bright versions of values from 30 to 37
 ![Output_Screenshot](src/screenshot1.png)
 
 
+## Example Usage
+
 ```c++
 #include "Menu.h"
 
