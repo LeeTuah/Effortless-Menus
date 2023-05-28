@@ -34,7 +34,8 @@ To use this menu software, include the `Menu.h` header file in your C++ project.
 
 These following color codes will be suppored by the program as the head and body colors:
 
-+____________+____________+
+```ruby
++------------+------------+
 | Color Code | Color Name |
 + ---------- + ---------- +
 | 30         | Black      |
@@ -46,6 +47,7 @@ These following color codes will be suppored by the program as the head and body
 | 36         | Cyan       |
 | 37         | White      |
 +------------+------------+
+```
 
 Values from 90 to 97 are the bright versions of values from 30 to 37
 
