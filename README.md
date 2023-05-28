@@ -28,6 +28,7 @@ To use this menu software, include the `Menu.h` header file in your C++ project.
 5. The `printMenu()` and `gen_element()` functions are private as their only role is to make the menu printing easier.
 6. You need to have the `conio.h` header in your project/compiler. Refer to [this link](https://raw.githubusercontent.com/ramadhinolfski/cpackets/master/conio.h) for the header file.
 7. All functions which will be added as fields have to be `void` functions with `no arguments`.
+8. This is not the final version of this app. It might be changed based on adding new features or fixing the old ones.
 
 ## Reference
 
