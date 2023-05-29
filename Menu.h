@@ -30,6 +30,8 @@
 # include <vector>
 # include <functional>
 # include <string>
+# include <fstream>
+# include <sstream>
 # include <conio.h>
 
 
@@ -68,11 +70,7 @@ class Menu{
 
         // = operator for the class
         Menu operator=(Menu m1);
-        // function which acts similar to the parameterized constructor of the class
-        void update(
-            int max_len, std::string header, std::string head_color, std::string body_color,
-            char up_key, char down_key, char sel_key
-        );
+
         // returns the max string length
         int get_max_len();
         // sets the max string length to a new value
@@ -155,33 +153,6 @@ char up_key, char down_key, char sel_key){
     keybinds[1] = down_key;
     keybinds[2] = sel_key;
     pos = names.begin();
-}
-
-void Menu::update(int max_len, std::string header, std::string head_color, std::string body_color,
-char up_key, char down_key, char sel_key){
-    if(max_len <= 0){
-        std::cout << "Error: Max String Length is set to 0.";
-        return;
-    }
-    
-    max_string_len = max_len;
-
-    if(head_color.size() != 2){
-        std::cout << "Error: Head Color must contain only two characters in ANSI Color Code form.";
-        return;
-    }
-
-    if(body_color.size() != 2){
-        std::cout << "Error: Body Color must contain only two characters in ANSI Color Code form.";
-        return;
-    }
-
-    colors.first = "\033[0;" + head_color + "m";
-    colors.second = "\033[0;" + body_color + "m";
-    heading = header;
-    keybinds[0] = up_key;
-    keybinds[1] = down_key;
-    keybinds[2] = sel_key;
 }
 
 Menu Menu::operator=(Menu m1){
