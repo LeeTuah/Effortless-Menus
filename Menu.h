@@ -99,8 +99,15 @@ class Menu{
         void add_field(std::string name, std::function<void (void)> func);
         // removing a field from the map
         void remove_field(std::string name);
+        // editing a currently existing field
+        void edit_field(std::string old_name, std::string new_name, std::function<void (void)> new_func);
         // if the map has a certain field
         bool has_field(std::string name);
+
+        // saves the current menu settings in a .txt file
+        void save(std::string fname = "menu-savefile");
+        // loads menu settings from a .txt file
+        void load(std::string fname = "menu-savefile");
 
         // it is like the main method of the class, the event loop for the menu resides here
         void run_iteration();
@@ -230,6 +237,18 @@ void Menu::remove_field(std::string name){
     for(auto itr = names.begin(); itr != names.end(); itr++){
         if(itr->first == name){
             names.erase(itr);
+            pos = names.begin();
+            return;
+        }
+    }
+
+    std::cout << "Error: Entry doesn\'t exist in the first place.";
+}
+
+void Menu::edit_field(std::string old_name, std::string new_name, std::function<void (void)> new_func){
+    for(int itr = 0; itr != (int)names.size(); itr++){
+        if(names[itr].first == old_name){
+            names[itr] = {new_name, new_func};
             pos = names.begin();
             return;
         }
