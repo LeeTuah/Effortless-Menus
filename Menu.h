@@ -105,9 +105,9 @@ class Menu{
         bool has_field(std::string name);
 
         // saves the current menu settings in a .txt file
-        void save(std::string fname = "menu-savefile");
+        // void save(std::string fname = "menu-savefile");
         // loads menu settings from a .txt file
-        void load(std::string fname = "menu-savefile");
+        // void load(std::string fname = "menu-savefile");
 
         // it is like the main method of the class, the event loop for the menu resides here
         void run_iteration();
@@ -280,17 +280,17 @@ void Menu::printMenu(){
         return;
     }
     
-    std::cout << "|" << std::string(max_string_len, '=') << "|" << std::endl << "|";
+    std::cout << std::string(max_string_len + 2, '=') << std::endl << "|";
     gen_element(heading, colors.first);
-    std::cout << "|" << std::endl << "|" << std::string(max_string_len, '=') << "|" << std::endl;
+    std::cout << "|" << std::endl << std::string(max_string_len + 2, '=') << std::endl;
 
     for(auto itr = names.begin(); itr != names.end(); itr++){
-        std::cout << "|";
+        std::cout << ((itr != pos)? "|": "<");
         gen_element(itr->first, ((itr == pos)? colors.first : colors.second));
-        std::cout << "|" << std::endl;
+        std::cout << ((itr != pos)? "|": ">") << std::endl;
     }
 
-    std::cout << "|" << std::string(max_string_len, '=') << "|" << std::endl;
+    std::cout << std::string(max_string_len + 2, '=') << std::endl;
 }
 
 void Menu::run_iteration(){
