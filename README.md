@@ -18,17 +18,16 @@ To use this menu software, include the `Menu.h` header file in your C++ project.
 1. Create an instance of the `Menu` class.
 2. Set the desired options such as maximum string length, colors, and key bindings.
 3. Add menu items using the `add_field` method, providing a name and associated function.
-4. Call the `run_iteration` method to start the menu event loop.
+4. Call the `run_menu` method to start the menu event loop.
 
 ## Notes
+
 1. The head color and the body color have to be in the ANSI Color Coding to work.
-2. The `run_iteration` function will keep running until and unless the user presses Exit.
+2. The `run_menu` function will keep running until and unless the user presses Exit.
 3. There is a pre-defined field called `Exit` in the menu and it appears at the bottom of the menu.
 4. The keybinds for the menu are stored in a string variable called `Keybinds`. The 0th index is the up key, 1st index is the down key, and the 2nd index is the select key.
 5. The `printMenu()` and `gen_element()` functions are private as their only role is to make the menu printing easier.
-6. You need to have the `conio.h` header in your project/compiler. Refer to [this link](https://raw.githubusercontent.com/ramadhinolfski/cpackets/master/conio.h) for the header file.
-7. All functions which will be added as fields have to be `void` functions with `no arguments`.
-8. This is not the final version of this app. It might be changed based on adding new features or fixing the old ones.
+6. You need to have the `conio.h` header in your project/compiler. Refer to [here](https://raw.githubusercontent.com/zoelabbb/conio.h/master/conio.h) for the header file.
 
 ## Reference
 
@@ -58,8 +57,6 @@ Values from 90 to 97 are the bright versions of values from 30 to 37
 ![Output_Screenshot](src/screenshot1.png)
 
 
-## Example Usage
-
 ```c++
 #include "Menu.h"
 
@@ -76,8 +73,20 @@ int main() {
     Menu menu;
     menu.add_field("Option 1", option1);
     menu.add_field("Option 2", option2);
-    menu.run_iteration();
+    menu.run_menu();
 
     return 0;
 }
 ```
+
+## Developer
+
+This program was solely developed by LeeTuah.
+
+- [Instagram](https://www.instagram.com/leetuah7)
+- [Discord](https://discordapp.com/users/755753736462401536)
+- [Twitter](https://twitter.com/LeeTuahhhh)
+
+## Acknowledgments
+
+- [Conio Header File](https://github.com/zoelabbb/conio.h): Library for user input in the terminal.
