@@ -1,6 +1,6 @@
 /**
 * Menu.h (Effortless console menu making software)
-* Copyright (C) 2023 by LeeTuah.
+* Copyright (C) 2023 by LeeTuah (Discord: leetuah).
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -16,15 +16,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-* @author LeeTuah (Discord: LeeTuah#2396)
-* @date 2023-05-27
-* @version 1.0
-*/
 
-
-# ifndef EPIC_MENU_UWU
-# define EPIC_MENU_UWU
+# ifndef EPIC_MENU_UWU__
+# define EPIC_MENU_UWU__
 
 # include <iostream>
 # include <vector>
@@ -32,10 +26,12 @@
 # include <string>
 # include <fstream>
 # include <sstream>
-# include <conio.h>
+# include "conio.h"
 
 
 class Menu{
+    // Read thw following comments above the variables and functions
+    // to get a brief idea of what they do
     private:
         // this list stores the name of menu items, and the functions associated to them
         std::vector<std::pair<std::string, std::function<void (void)>>> names;
@@ -51,6 +47,11 @@ class Menu{
         int max_string_len;
         // stores the position of the currently selected item in the menu
         std::vector<std::pair<std::string, std::function<void (void)>>>::iterator pos;
+        // stores whether the program will wait after the function has completed running
+        // for any random user input before next iteration of the menu
+        bool waitForNextIteration;
+        // required by conio.h
+        Console console;
 
         // prints the entirity of the menu in the terminal
         void printMenu();
@@ -104,17 +105,22 @@ class Menu{
         // if the map has a certain field
         bool has_field(std::string name);
 
+        // sets whether the program will stop for a random user input after the 
+        // given user function has completed running
+        void set_iteration_state(bool waitForNextIteration);
+        // returns the current iteration state
+        bool get_iteration_state();
+
         // saves the current menu settings in a .txt file
         // void save(std::string fname = "menu-savefile");
         // loads menu settings from a .txt file
         // void load(std::string fname = "menu-savefile");
 
         // it is like the main method of the class, the event loop for the menu resides here
-        void run_iteration();
+        void run_menu();
 };
 
-// function to clear the console
-void clear(){
+void __clear(){
     # ifdef _WIN32
         system("cls");
     # else
@@ -127,6 +133,7 @@ Menu::Menu(){
     max_string_len = 32;
     colors = {};
     neutral = "\033[0m";
+    waitForNextIteration = true;
     keybinds = "wsq";
     heading = "MENU";
     colors.first = "\033[0;31m";
@@ -168,6 +175,7 @@ Menu Menu::operator=(Menu m1){
     this->colors = m1.colors;
     this->pos = m1.pos;
     this->keybinds = m1.keybinds;
+    this->waitForNextIteration = m1.waitForNextIteration;
 
     return *this;
 }
@@ -265,6 +273,14 @@ bool Menu::has_field(std::string name){
     return false;
 }
 
+void Menu::set_iteration_state(bool waitForNextIteration){
+    this->waitForNextIteration = waitForNextIteration;
+}
+
+bool Menu::get_iteration_state(){
+    return this->waitForNextIteration;
+}
+
 void Menu::gen_element(std::string str, std::string color){
     int space_size = (max_string_len - ((int)str.size()))/2;
 
@@ -276,7 +292,7 @@ void Menu::gen_element(std::string str, std::string color){
 
 void Menu::printMenu(){
     if(max_string_len <= 0){
-        std::cout << "Error: Max String Length is set to 0.";
+        std::cout << "Error: Invalid Max String Length provided.";
         return;
     }
     
@@ -293,20 +309,20 @@ void Menu::printMenu(){
     std::cout << std::string(max_string_len + 2, '=') << std::endl;
 }
 
-void Menu::run_iteration(){
+void Menu::run_menu(){
     char choice;
     bool run = true;
     pos = names.begin();
 
-    this->add_field("Exit", clear);
+    this->add_field("Exit", __clear);
 
     while(run){
-        clear();
+        __clear();
         std::cout << "Press " << keybinds[0] << " and " << keybinds[1] << " to move up and down the menu." << std::endl;
         std::cout << "Press " << keybinds[2] << " to select an item." << std::endl;
         printMenu();
-        choice = getch();
-        
+        choice = console.getch();
+
         if(choice == keybinds[0]){
             if(pos != names.begin()) pos--;
         }
@@ -321,8 +337,9 @@ void Menu::run_iteration(){
                 break;
             }
 
-            clear();
+            __clear();
             pos->second();
+            console.getch();
         }
     }
 
