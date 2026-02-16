@@ -14,6 +14,8 @@
 *
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* + @Ryuou02 : added support for linux terminals; code from https://codereview.stackexchange.com/questions/294653/cross-platform-raw-input-handling-in-c-c-for-linux-and-windows
 */
 
 
@@ -26,8 +28,48 @@
 # include <string>
 # include <fstream>
 # include <sstream>
+
+#ifdef __linux__
+
+#include <unistd.h>
+#include <termios.h>
+
+char getch(void) {
+    char buf = 0;
+    struct termios old = {0};
+    fflush(stdout);
+    if(tcgetattr(0, &old) < 0)
+        perror("tcsetattr()");
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
+    if(tcsetattr(0, TCSANOW, &old) < 0)
+        perror("tcsetattr ICANON");
+    if(read(0, &buf, 1) < 0)
+        perror("read()");
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
+    if(tcsetattr(0, TCSADRAIN, &old) < 0)
+        perror("tcsetattr ~ICANON");
+    // printf("%c\n", buf);
+    return buf;
+}
+
+void flushInput() {
+    // Flush stdin (discard data not read yet)
+    tcflush(STDIN_FILENO, TCIFLUSH);
+}
+
+#define INPUT getch();
+
+#else
+
 # include "conio.h"
 
+#define INPUT console.getch();
+
+#endif
 
 class Menu{
     // Read thw following comments above the variables and functions
@@ -50,8 +92,12 @@ class Menu{
         // stores whether the program will wait after the function has completed running
         // for any random user input before next iteration of the menu
         bool waitForNextIteration;
+
+        #ifndef __linux__
         // required by conio.h
         Console console;
+
+        #endif
 
         // prints the entirity of the menu in the terminal
         void printMenu();
@@ -321,7 +367,7 @@ void Menu::run_menu(){
         std::cout << "Press " << keybinds[0] << " and " << keybinds[1] << " to move up and down the menu." << std::endl;
         std::cout << "Press " << keybinds[2] << " to select an item." << std::endl;
         printMenu();
-        choice = console.getch();
+        choice = INPUT;
 
         if(choice == keybinds[0]){
             if(pos != names.begin()) pos--;
@@ -339,7 +385,7 @@ void Menu::run_menu(){
 
             __clear();
             pos->second();
-            console.getch();
+            INPUT;
         }
     }
 
@@ -353,6 +399,10 @@ Menu::~Menu(){
     neutral = "";
     keybinds = "";
     pos = names.end();
+
+    #ifdef __linux__
+    flushInput();
+    #endif
 }
 
 # endif
