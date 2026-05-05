@@ -67,7 +67,7 @@ void flushInput() {
 
 # include "conio.h"
 
-#define INPUT console.getch();
+#define INPUT getch();
 
 #endif
 
@@ -93,11 +93,11 @@ class Menu{
         // for any random user input before next iteration of the menu
         bool waitForNextIteration;
 
-        #ifndef __linux__
+        //#ifndef __linux__
         // required by conio.h
-        Console console;
+        //Console console;
 
-        #endif
+        //#endif
 
         // prints the entirity of the menu in the terminal
         void printMenu();
