@@ -19,8 +19,8 @@
 */
 
 
-# ifndef EPIC_MENU_UWU__
-# define EPIC_MENU_UWU__
+# ifndef EFFORTLESS_MENUS___
+# define EFFORTLESS_MENUS___
 
 # include <iostream>
 # include <vector>
