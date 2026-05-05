@@ -118,6 +118,11 @@ class Menu{
         // = operator for the class
         Menu operator=(Menu m1);
 
+        bool print_controls = true; // whether to print the controls or not
+
+        std::string header; // text to render above menu
+        std::string footer; // text to render below menu
+
         // returns the max string length
         int get_max_len();
         // sets the max string length to a new value
@@ -342,6 +347,13 @@ void Menu::printMenu(){
         return;
     }
     
+    if (header != "") std::cout << header << std::endl;
+
+    if (print_controls){
+        std::cout << "Press " << keybinds[0] << " and " << keybinds[1] << " to move up and down the menu." << std::endl;
+        std::cout << "Press " << keybinds[2] << " to select an item." << std::endl;
+    }
+
     std::cout << std::string(max_string_len + 2, '=') << std::endl << "|";
     gen_element(heading, colors.first);
     std::cout << "|" << std::endl << std::string(max_string_len + 2, '=') << std::endl;
@@ -353,6 +365,8 @@ void Menu::printMenu(){
     }
 
     std::cout << std::string(max_string_len + 2, '=') << std::endl;
+
+    if (footer != "") std::cout << footer << std::endl;
 }
 
 void Menu::run_menu(){
@@ -364,8 +378,6 @@ void Menu::run_menu(){
 
     while(run){
         __clear();
-        std::cout << "Press " << keybinds[0] << " and " << keybinds[1] << " to move up and down the menu." << std::endl;
-        std::cout << "Press " << keybinds[2] << " to select an item." << std::endl;
         printMenu();
         choice = INPUT;
 
@@ -385,7 +397,7 @@ void Menu::run_menu(){
 
             __clear();
             pos->second();
-            INPUT;
+            // INPUT;
         }
     }
 
